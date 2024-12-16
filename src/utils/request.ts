@@ -21,7 +21,7 @@ axios.interceptors.request.use(
 /* response interceptors */
 axios.interceptors.response.use(
     response => {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             return Promise.resolve(response);
         } else {
             return Promise.reject(response);

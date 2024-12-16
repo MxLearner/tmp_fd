@@ -1,21 +1,19 @@
 <template>
   <navigation-bar />
-  <div class="movie-container">
-    <movie-detail :id="id"/>
-  </div>
+  <movie-intro :id="id"/>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import NavigationBar from '@/components/NavigationBar.vue'
-import MovieDetail from '@/components/MovieDetail.vue';
+import MovieIntro from '@/components/MovieDetail.vue';
 
 export default defineComponent({
   name: 'Movie',
   components: {
     NavigationBar,
-    MovieDetail
+    MovieIntro
   },
   setup() {
     const route = useRoute()
@@ -29,7 +27,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.movie-container {
-  padding: 20px;
-}
+
 </style>

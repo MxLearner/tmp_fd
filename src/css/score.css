@@ -1,0 +1,20 @@
+.review-stars {
+    margin: 5px 0;
+    font-size: 1.2em;
+    color: #ccc; /* 默认灰色星星 */
+}
+
+.star {
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+.star.filled {
+    color: #ffc107; /* 填充金色 */
+}
+
+.review-score {
+    font-size: 1em;
+    margin-left: 5px;
+    color: #333;
+}

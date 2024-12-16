@@ -1,0 +1,46 @@
+.review-block {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc; /* 每条评论的分隔线 */
+}
+/* 评分和用户信息在一行 */
+.user-review-row {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    gap: 10px; /* 控制用户名和评分的间距 */
+    margin-bottom: 10px;
+}
+
+.user-review-row p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.review-time {
+    color: #888888;
+    font-style: italic;
+    font-size: 1em; /* 时间字体大小 */
+}
+
+.review-comments {
+    margin-top: 10px;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/* 按钮样式 */
+.review-open-modal {
+
+    width:300px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #FFA500;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.review-open-modal:hover {
+    background-color: #ffae00;
+}

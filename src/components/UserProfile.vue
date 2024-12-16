@@ -19,15 +19,21 @@
     <el-card class="change-password-card">
       <div class="change-password">
         <h3>修改密码</h3>
-        <el-form :model="passwordForm" ref="passwordForm" class="password-form">
-          <el-form-item label="原密码" prop="oldPassword" :rules="oldPasswordRules">
-            <el-input v-model="passwordForm.oldPassword" type="password" placeholder="请输入原密码"></el-input>
+        <el-form
+          :model="form"
+          :rules="rules"
+          ref="passwordForm"
+          class="password-form"
+          label-width="100px"
+        >
+          <el-form-item label="原密码" prop="oldPassword">
+            <el-input v-model="form.oldPassword" type="password" placeholder="请输入原密码" />
           </el-form-item>
-          <el-form-item label="新密码" prop="newPassword" :rules="newPasswordRules">
-            <el-input v-model="passwordForm.newPassword" type="password" placeholder="请输入新密码"></el-input>
+          <el-form-item label="新密码" prop="newPassword">
+            <el-input v-model="form.newPassword" type="password" placeholder="请输入新密码" />
           </el-form-item>
-          <el-form-item label="确认新密码" prop="confirmPassword" :rules="confirmPasswordRules">
-            <el-input v-model="passwordForm.confirmPassword" type="password" placeholder="请确认新密码"></el-input>
+          <el-form-item label="确认新密码" prop="confirmPassword">
+            <el-input v-model="form.confirmPassword" type="password" placeholder="请确认新密码" />
           </el-form-item>
           <el-button type="primary" @click="handleSubmit">提交修改</el-button>
         </el-form>
@@ -39,10 +45,16 @@
 <script lang="ts">
 import { defineComponent, ref, getCurrentInstance } from 'vue'
 import { useStore } from '@/store/index.ts'
-import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus'
+import { ElForm, ElFormItem, ElInput, ElButton, FormRules } from 'element-plus'
 
 export default defineComponent({
   name: 'UserProfile',
+  components: {
+    ElForm,
+    ElFormItem,
+    ElInput,
+    ElButton
+  },
   setup() {
     const store = useStore()
     const { proxy } = getCurrentInstance() as any
@@ -51,53 +63,66 @@ export default defineComponent({
     const userId = store.userId
     const userEmail = store.userEmail
 
-    const passwordForm = ref({
+    const form = ref({
       oldPassword: '',
       newPassword: '',
       confirmPassword: ''
     })
     const loading = ref(false)
 
-    const oldPasswordRules = [{ required: true, message: '请输入原密码', trigger: 'blur' }]
-    const newPasswordRules = [
-      { required: true, message: '请输入新密码', trigger: 'blur' },
-      { min: 6, message: '密码长度至少6位', trigger: 'blur' }
-    ]
-    const confirmPasswordRules = [
-      { required: true, message: '请确认新密码', trigger: 'blur' },
-      {
-        validator: (rule: any, value: string, callback: any) => {
-          if (value !== passwordForm.value.newPassword) {
-            callback(new Error('确认密码与新密码不一致!'))
-          } else {
-            callback()
-          }
-        },
-        trigger: 'blur'
-      }
-    ]
+    const rules = ref<FormRules>({
+      oldPassword: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
+      newPassword: [
+        { required: true, message: '请输入新密码', trigger: 'blur' },
+        { min: 6, message: '密码长度至少6位', trigger: 'blur' },
+        {
+          validator: (rule: any, value: string, callback: any) => {
+            if (value === form.value.oldPassword) {
+              callback(new Error('新密码不能与旧密码相同!'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }
+      ],
+      confirmPassword: [
+        { required: true, message: '请确认新密码', trigger: 'blur' },
+        {
+          validator: (rule: any, value: string, callback: any) => {
+            if (value !== form.value.newPassword) {
+              callback(new Error('确认密码与新密码不一致!'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }
+      ]
+    })
 
     const handleSubmit = async () => {
-      const { oldPassword, newPassword, confirmPassword } = passwordForm.value
+      const { oldPassword, newPassword, confirmPassword } = form.value
       if (!oldPassword || !newPassword || !confirmPassword) {
         return
       }
 
       loading.value = true
       let data = {
+        username: userName,
         oldPassword: oldPassword,
         newPassword: newPassword,
       }
       proxy.$post('/changePassword', data)
       .then((response :any) => {
         console.log('ChangePassword response: ', response)
-        if (response === '修改成功!') {
-          alert('密码修改成功!')
+        if (response === '密码修改成功!') {
+          alert(response)
         }
       })
       .catch((error: any) => {
         console.log('ChangePassword error: ', error)
-        alert(error)
+        alert('原密码错误!')
       })
       .finally(() => {
         loading.value = false
@@ -108,10 +133,8 @@ export default defineComponent({
       userName,
       userId,
       userEmail,
-      passwordForm,
-      oldPasswordRules,
-      newPasswordRules,
-      confirmPasswordRules,
+      form,
+      rules,
       handleSubmit
     }
   }
@@ -137,7 +160,8 @@ export default defineComponent({
 }
 
 .password-form {
-  width: 400px;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .password-form .el-form-item {

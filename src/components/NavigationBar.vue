@@ -48,6 +48,11 @@ export default defineComponent({
     }
 
     const goToProfile = () => {
+      if (!userLoggedIn) {
+        alert('请先登录')
+        router.push({ name: 'Login' })
+        return
+      }
       router.push({ name: 'Profile' })
     }
 

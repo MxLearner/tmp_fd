@@ -111,14 +111,14 @@ export default defineComponent({
       proxy.$post('/register', data)
       .then((response: any) => {
         console.log(response)
-        if (response === '注册成功!') {
+        if (response.message === '注册成功!') {
           alert('注册成功!')
           router.push({ name: 'Login' }) // 跳转到登录页面
         }
       })
       .catch((error: any) => {
         console.log('Register Error:', error)
-        alert(error)
+        alert(error.error)
       })
       .finally(() => {
         loading.value = false

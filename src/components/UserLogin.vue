@@ -80,19 +80,21 @@ export default defineComponent({
       proxy.$post('/login', data)
       .then((response: any) => {
         console.log('Login response: ', response)
-        if (response === '登录成功') {
+        console.log(response.message);
+        if (response.message === '登录成功!') {
           alert('登录成功')
 
           store.setUserName(username) // 设置用户名
-          store.setUserId(response.user_id) // 设置用户ID
+          store.setUserId(response.userId) // 设置用户ID
           store.setUserEmail(response.email) // 设置用户邮箱
 
           router.push({ name: 'Index' }) // 跳转到主页
         }
+
       })
       .catch((error: any) => {
         console.log('Login error: ', error)
-        alert(error)
+        alert(error.error)
       })
       .finally(() => {
         loading.value = false
