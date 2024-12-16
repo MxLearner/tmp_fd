@@ -1,10 +1,10 @@
 /*-------------------- axios encapsulation --------------------*/
 import axios from 'axios';
-import router from '../router/index';
+import router from '@/router/index.ts';
 //  let protocol = window.location.protocol;
 //  let host = window.location.host;
 //  axios.defaults.baseURL = protocol + "//" + host;
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://localhost:8080/api'
 
 /* request interceptors */
 axios.interceptors.request.use(
@@ -54,17 +54,34 @@ axios.interceptors.response.use(
 const $get = (url: string, params: object) => {
     return new Promise(
         (resolve, reject) => {
-            axios.get(url, {params: params,
-        }).then(res => {
+            axios.get(url, {params: params,})
+        .then(res => {
             resolve(res.data);
-        }).catch(err => {
+        })
+        .catch(err => {
             reject(err.data)
-        })});
+        })
+    });
 }
+
+type Params = {
+    [key: string]: string;
+};
+
 /** * post method，Corresponding to post requests * @param {String} url [The requested URL address] * @param {Object} params [Parameters carried during request] */
-const $post = (url: string, params: object) => {
+const $post = (url: string, params: Params) => {
     return new Promise((resolve, reject) => {
-        axios.post(url, params) 
+        const formData = new URLSearchParams();
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                formData.append(key, params[key]);
+            }
+        }
+        axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }) 
         // It is to serialize objects into URL form and concatenate them with '&'
         .then(res => {
             resolve(res.data);
