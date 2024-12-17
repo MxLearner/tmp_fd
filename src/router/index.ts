@@ -5,6 +5,8 @@ import Register from '@/views/Register.vue';
 import SearchResults from '@/views/SearchResults.vue';
 import Movie from '@/views/Movie.vue';
 import Profile from '@/views/Profile.vue';
+import Forum from '@/views/Forum.vue';
+import CommunityForum from '@/components/CommunityForum.vue';  // 引入 CommunityForum.vue
 
 const routes = [
     {
@@ -37,6 +39,17 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile
+    },
+    {
+        path: '/forum',
+        name: 'Forum',
+        component: Forum
+    },
+    {
+        path: '/communityforum', // 动态路由，接受 post
+        name: 'CommunityForum',
+        component: CommunityForum,
+
     }
 ];
 

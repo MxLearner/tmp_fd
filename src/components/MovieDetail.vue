@@ -31,7 +31,7 @@
         <p class="review-comments">{{ review.text }}</p>
       </div>
     </div>
-    <button @click="toggleShowReviewModal" class="review-open-modal">写评论</button>
+    <button @click="showReviewModal = true" class="review-open-modal">写评论</button>
     <div v-if="showReviewModal" class="modal">
       <div class="modal-content">
         <h2>写评论</h2>
@@ -62,7 +62,7 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useStore } from '@/store/index.ts';
-import { useRouter } from 'vue-router';
+
 
 export default defineComponent({
   name: "MovieIntro",
@@ -73,8 +73,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const router = useRouter();
-
     const movieId = props.id;
     const user = useStore();
     const userName = user.userName;
@@ -124,17 +122,9 @@ export default defineComponent({
       };
       return date.toLocaleDateString('en-US', options); // 格式化日期
     },
-    toggleShowReviewModal() {
-      if (!this.userName) {
-        alert("请先登录后再写评论！");
-        this.$router.push({ name: "Login" })
-        return;
-      }
-      this.showReviewModal = true
-    },
     async fetchMovieData() {
       try {
-        const response = await axios.post("http://localhost:8080/api/details", {
+        const response = await axios.post("http://localhost:9000/api/details", {
           movie_id: this.movieId, // 示例电影 ID
         });
 
@@ -153,7 +143,7 @@ export default defineComponent({
     },
     async fetchMovieReview() {
       try {
-        const response = await axios.post("http://localhost:8080/api/reviews", {
+        const response = await axios.post("http://localhost:9000/api/reviews", {
           movie_id: this.movieId, // 示例电影 ID
         });
 
@@ -182,7 +172,7 @@ export default defineComponent({
       console.log("准备发送的数据:", this.newReview); // 打印发送的数据
 
       try {
-        const response = await axios.post("http://localhost:8080/api/new_review", this.newReview);
+        const response = await axios.post("http://localhost:9000/api/new_review", this.newReview);
 
         if (response.data === "插入成功") {
           this.reviews.push({ ...this.newReview });

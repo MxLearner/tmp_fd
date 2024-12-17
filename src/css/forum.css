@@ -1,0 +1,173 @@
+
+
+/* 按钮样式 */
+.forum-post-button,
+.forum-review-button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.forum-post-button:hover,
+.forum-review-button:hover {
+    background-color: #45a049;
+}
+
+.forum-cancel-button {
+    background-color: #f44336;
+}
+
+.forum-cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+/* 弹窗整体样式 */
+.forum-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.forum-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 输入框样式 */
+.forum-post-input,
+.forum-review-input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.forum-post-textarea,
+.forum-review-textarea {
+    width: 90%;
+    height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: none;
+}
+
+/* 弹窗操作按钮 */
+.forum-modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.forum-submit-button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.forum-submit-button:hover {
+    background-color: #45a049;
+}
+
+/* 论坛内容样式 */
+.forum-content {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+
+}
+
+.forum-details h2 {
+    margin-bottom: 10px;
+}
+
+.forum-description {
+    text-align:left;
+}
+
+.forum-comments {
+    margin-top: 20px;
+}
+.forum-comments h2 {
+    color:green;
+    text-align: left;
+}
+.forum-divider {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+.forum-comment-block {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+
+}
+
+.forum-user-row {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    gap: 20px; /* 控制用户名和评分的间距 */
+    margin-bottom: 10px;
+}
+.forum-user-row p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.forum-timestamp {
+    color: #888888;
+    font-style: italic;
+    font-size: 1em; /* 时间字体大小 */
+}
+
+.forum-comment-text {
+    text-align:left;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
