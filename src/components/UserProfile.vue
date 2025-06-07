@@ -106,7 +106,10 @@ export default defineComponent({
       if (!oldPassword || !newPassword || !confirmPassword) {
         return
       }
-
+      if (newPassword !== confirmPassword) {
+        alert('新密码和确认密码不一致!')
+        return
+      }
       loading.value = true
       let data = {
         username: userName,

@@ -6,8 +6,9 @@
       @input="onSearchInput"
       clearable
       style="width: 300px"
+      data-test="search-input"
     />
-    <el-button @click="handleSearch" type="primary" icon="el-icon-search">搜索</el-button>
+    <el-button @click="handleSearch" type="primary" icon="el-icon-search" data-test="search-button">搜索</el-button>
   </div>
 </template>
 

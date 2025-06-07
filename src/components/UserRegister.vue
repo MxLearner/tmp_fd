@@ -54,6 +54,7 @@
 import { defineComponent, ref, getCurrentInstance } from 'vue'
 import { ElForm, ElFormItem, ElInput, ElButton, ElRow, ElCol, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'UserRegister',
@@ -67,7 +68,6 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { proxy } = getCurrentInstance() as any
     const form = ref({
       username: '',
       password: '',
@@ -108,10 +108,19 @@ export default defineComponent({
         password: password,
         email: email
       }
-      proxy.$post('/register', data)
+      const params = new URLSearchParams()
+      params.append('username', data.username)
+      params.append('password', data.password)
+      params.append('email', data.email)
+
+      axios.post('http://60.204.222.125:8080/api/register', params, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
       .then((response: any) => {
         console.log(response)
-        if (response.message === '注册成功!') {
+        if (response.data.message === '注册成功!') {
           alert('注册成功!')
           router.push({ name: 'Login' }) // 跳转到登录页面
         }

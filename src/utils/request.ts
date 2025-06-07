@@ -4,7 +4,7 @@ import router from '@/router/index.ts';
 //  let protocol = window.location.protocol;
 //  let host = window.location.host;
 //  axios.defaults.baseURL = protocol + "//" + host;
-axios.defaults.baseURL = 'http://localhost:9000/api'
+axios.defaults.baseURL = 'http://60.204.222.125:8080/api'
 
 /* request interceptors */
 axios.interceptors.request.use(

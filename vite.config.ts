@@ -1,16 +1,20 @@
 import { defineConfig } from 'vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    visualizer({
+      filename: './stats.html',
+      open: true, // 自动打开浏览器
+    }),],
   resolve: {
-    alias: [
-      {
-        find: '@',
-        replacement: resolve(__dirname, './src')
-      }
-    ]
+    alias: 
+    {
+        '@': path.resolve(__dirname, 'src'),
+    }
   }
 })

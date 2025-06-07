@@ -43,7 +43,7 @@ export default {
     // 获取所有帖子
     async fetchPosts() {
       try {
-        const response = await axios.get("http://localhost:9000/api/post");
+        const response = await axios.get("http://60.204.222.125:8080/api/post");
         this.posts = response.data.post || [];
         console.log(this.posts); // 调试输出
         this.filteredPosts = this.posts; // 初始化时显示所有帖子

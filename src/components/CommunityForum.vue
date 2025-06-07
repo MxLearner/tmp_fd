@@ -9,7 +9,7 @@
           <input v-model="newPost.title" type="text" placeholder="帖子标题" class="forum-post-input" />
           <textarea v-model="newPost.text" placeholder="写下你的帖子内容..." class="forum-post-textarea"></textarea>
           <div class="forum-modal-actions">
-            <button @click="submitPost" class="forum-submit-button">提交</button>
+            <button data-test="submit-button" @click="submitPost" class="forum-submit-button">提交</button>
             <button @click="showPostModal = false" class="forum-cancel-button">取消</button>
           </div>
         </div>
@@ -38,13 +38,13 @@
         <p class="forum-comment-text">{{ comment.text }}</p>
       </div>
     </div>
-    <button @click="showReviewModal = true" class="forum-review-button">写评论</button>
+    <button data-test="writecomment-button" @click="showReviewModal = true" class="forum-review-button">写评论</button>
     <div v-if="showReviewModal" class="forum-modal">
       <div class="forum-modal-content">
         <h2>写评论</h2>
         <textarea v-model="newComment.text" placeholder="Write your comments here..." class="forum-review-textarea"></textarea>
         <div class="forum-modal-actions">
-          <button @click="submitComment" class="forum-submit-button">提交</button>
+          <button data-test="submit-button" @click="submitComment" class="forum-submit-button">提交</button>
           <button @click="showReviewModal = false" class="forum-cancel-button">取消</button>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default {
       this.newPost.movie_id = "1";
 
       try {
-        const response = await axios.post("http://localhost:9000/api/post", this.newPost);
+        const response = await axios.post("http://60.204.222.125:8080/api/post", this.newPost);
         if (response.data.message === "发布成功") {
           alert("帖子已发布！");
           this.showPostModal = false;
@@ -156,7 +156,7 @@ export default {
 
     async fetchPosts() {
       try {
-        const response = await axios.get("http://localhost:9000/api/post");
+        const response = await axios.get("http://60.204.222.125:8080/api/post");
 
         if (response.data.post && response.data.post.length > 0) {
           this.post = response.data.post[0];
@@ -170,7 +170,8 @@ export default {
 
     async fetchPostComment() {
       console.log(this.post.postId);
-        const response = await axios.post("http://localhost:9000/api/newcomments", {
+      try{
+        const response = await axios.post("http://60.204.222.125:8080/api/newcomments", {
           post_id: this.post.postId,
         });
 
@@ -178,12 +179,18 @@ export default {
           this.comments = response.data.comment;
         } else {
           this.comments = [];
-        }
+        }  } catch (error) {
+        console.error("Post comment failed:", error);
+      }
     },
     async submitComment() {
       const user = useStore();
 
-      if (!user.userName || !this.newComment.text.trim()) {
+      if (!user.userName ) {
+        alert("未登录！");
+        return;
+      }
+      if (!this.newComment.text.trim()) {
         alert("请填写所有必填字段后再提交！");
         return;
       }
@@ -192,8 +199,9 @@ export default {
       this.newComment.comment_date = this.getCurrentDate();
       console.log(this.newComment);
       try {
-        const response = await axios.post("http://localhost:9000/api/comments", this.newComment);
-        if (response.data.message === "评论成功") {
+        const response = await axios.post("http://60.204.222.125:8080/api/comments", this.newComment);
+        console.log("提交评论的响应:", response.data);
+        if (response.data === "{message=评论成功}") {
           this.comments.push({ ...this.newComment });
           this.newComment = { comment_id: "", userId: "", post_id: "", text: "", comment_date: "" };
           this.showReviewModal = false;
@@ -213,5 +221,4 @@ export default {
 @import "@/css/score.css";
 @import "@/css/model.css";
 @import "@/css/forum.css";
-/* 样式定义省略 */
 </style>

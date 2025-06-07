@@ -9,7 +9,7 @@
 
       <!-- 右侧是菜单 -->
       <el-col :span="8" :offset="8" class="nav-right">
-        <el-button class="forum-btn" type="text" @click="goToForum">社区论坛</el-button>
+        <el-button class="forum-btn" type="text" @click="goToForum" data-test="forum-link">社区论坛</el-button>
 
         <!-- 判断用户是否登录 -->
         <el-button class="login-btn" type="text" @click="goToLogin">{{  userLoggedIn ? userName + ' 退出登录' : '请登录'  }}</el-button>

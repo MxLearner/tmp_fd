@@ -2,15 +2,14 @@
   <el-form
     ref="loginForm"
     :model="form"
-    :rules="rules"
     label-width="100px"
     class="login-form"
   >
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="form.username" placeholder="请输入用户名" />
+      <el-input v-model="form.username" placeholder="请输入用户名" data-test="username"/>
     </el-form-item>
 
-    <el-form-item label="密码" prop="password">
+    <el-form-item label="密码" prop="password" data-test="password">
       <el-input
         v-model="form.password"
         type="password"
@@ -22,15 +21,16 @@
       <el-row>
         <!-- 登录按钮 -->
         <el-col :span="12">
-          <el-button type="primary" @click="handleLogin" :loading="loading" style="width: 100%">登录</el-button>
+          <el-button type="primary" @click="handleLogin" :loading="loading" data-test="login-button" style="width: 100%">登录</el-button>
         </el-col>
 
         <!-- 注册按钮 -->
         <el-col :span="12">
-          <el-button @click="goToRegister" style="width: 100%; margin-left: 20px">注册</el-button>
+          <el-button @click="goToRegister" data-test="register-button" style="width: 100%; margin-left: 20px">注册</el-button>
         </el-col>
       </el-row>
     </el-form-item>
+    <p data-test="message">{{ message }}</p>
   </el-form>
 </template>
 
@@ -38,7 +38,7 @@
 import { defineComponent, ref, getCurrentInstance } from 'vue';
 import { ElForm, ElFormItem, ElInput, ElButton, ElRow, ElCol, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { useStore } from '@/store/index.ts';
+import { useStore } from '../store/index';
 
 export default defineComponent({
   name: 'UserLogin',
@@ -51,6 +51,7 @@ export default defineComponent({
     ElCol
   },
   setup() {
+    const message = ref('')
     const router = useRouter()
     const store = useStore()
     const { proxy } = getCurrentInstance() as any
@@ -60,15 +61,12 @@ export default defineComponent({
     })
     const loading = ref(false)
 
-    const rules = ref<FormRules>({
-      username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-      password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-    })
 
     // 登录请求处理
     const handleLogin = async () => {
       const { username, password } = form.value
       if (!username || !password) {
+        message.value = '用户名和密码不能为空'
         return
       }
       
@@ -83,7 +81,7 @@ export default defineComponent({
         console.log(response.message);
         if (response.message === '登录成功!') {
           alert('登录成功')
-
+          message.value = response.message
           store.setUserName(username) // 设置用户名
           store.setUserId(response.userId) // 设置用户ID
           store.setUserEmail(response.email) // 设置用户邮箱
@@ -94,6 +92,7 @@ export default defineComponent({
       })
       .catch((error: any) => {
         console.log('Login error: ', error)
+        message.value = error.error
         alert(error.error)
       })
       .finally(() => {
@@ -108,10 +107,10 @@ export default defineComponent({
 
     return {
       form,
-      rules,
       loading,
       handleLogin,
-      goToRegister
+      goToRegister,
+      message
     }
   }
 })

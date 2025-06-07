@@ -31,7 +31,7 @@
         <p class="review-comments">{{ review.text }}</p>
       </div>
     </div>
-    <button @click="showReviewModal = true" class="review-open-modal">写评论</button>
+    <button @click="showReviewModal = true" class="review-open-modal" data-test="writecomment-button">写评论</button>
     <div v-if="showReviewModal" class="modal">
       <div class="modal-content">
         <h2>写评论</h2>
@@ -124,7 +124,7 @@ export default defineComponent({
     },
     async fetchMovieData() {
       try {
-        const response = await axios.post("http://localhost:9000/api/details", {
+        const response = await axios.post("http://60.204.222.125:8080/api/details", {
           movie_id: this.movieId, // 示例电影 ID
         });
 
@@ -143,7 +143,7 @@ export default defineComponent({
     },
     async fetchMovieReview() {
       try {
-        const response = await axios.post("http://localhost:9000/api/reviews", {
+        const response = await axios.post("http://60.204.222.125:8080/api/reviews", {
           movie_id: this.movieId, // 示例电影 ID
         });
 
@@ -172,7 +172,7 @@ export default defineComponent({
       console.log("准备发送的数据:", this.newReview); // 打印发送的数据
 
       try {
-        const response = await axios.post("http://localhost:9000/api/new_review", this.newReview);
+        const response = await axios.post("http://60.204.222.125:8080/api/new_review", this.newReview);
 
         if (response.data === "插入成功") {
           this.reviews.push({ ...this.newReview });

@@ -59,3 +59,4 @@ const router = createRouter({
 });
 
 export default router;
+export { routes } // 导出 routes 以便在测试中使用
