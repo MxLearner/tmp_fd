@@ -93,4 +93,35 @@ describe('CommunityForum.vue 评论功能测试', () => {
     expect(window.alert).toHaveBeenCalledWith('请填写所有必填字段后再提交！')
   })
 
+  it('应在评论非空时 alert 发送请求', async () => {
+
+   const wrapper = mount(CommunityForum, {
+      global: {
+        plugins: [
+          router,
+          createTestingPinia({
+            createSpy: vi.fn,
+            initialState: {
+              index: {
+                userId: '1001',
+                userName: 'testuser',
+                userEmail: 'test@example.com'
+              }
+            },
+            stubActions: false
+          })
+        ]
+      }
+    })
+
+    const writeBtn = wrapper.find('[data-test="writecomment-button"]')
+    expect(writeBtn.exists()).toBe(true)
+
+    await writeBtn.trigger('click')
+    await nextTick()
+
+
+    const submitBtn = wrapper.find('[data-test="submit-button"]')
+    expect(submitBtn.exists()).toBe(true)
+  })
 })

@@ -12,6 +12,7 @@ window.alert = vi.fn()
 const testCases = [
   { no: 'sm_1', title: '12312414' , expected: 200, message: '成功搜索' },
   { no: 'sm_2', title: 'the' , expected: 200, message: '成功搜索' },
+  { no: 'sm_3', title: '' , expected: 200, message: '成功搜索' },
 ]
 
 const router = createRouter({

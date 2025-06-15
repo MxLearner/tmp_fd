@@ -5,12 +5,16 @@ describe("MovieList 分页系统测试（共 30 条，每页 8 条）", () => {
   beforeEach(() => {
     // 每个 it 先登录
     cy.visit("/login");
+    cy.intercept('POST', '/api/login').as('loginReq');
     cy.get('[data-test="username"]').type("testuser");
     cy.get('.el-form-item[data-test="password"] input').type("123456");
     cy.on("window:alert", (txt) => {
       expect(txt).to.equal("登录成功");
     });
     cy.get('[data-test="login-button"]').click();
+        cy.wait('@loginReq', { timeout: 10000 }) // 最多等10秒响应
+    .its('response.statusCode')
+    .should('eq', 200);
     cy.url().should("include", "/"); // 确认跳到首页
   });
 
@@ -18,7 +22,7 @@ describe("MovieList 分页系统测试（共 30 条，每页 8 条）", () => {
 
     // ——（3）访问首页 —— //
     cy.visit("/");
-
+    cy.wait(2000);
     // ——（4）验证第一页正好 8 条 —— //
     cy.get(".movie-card").should("have.length", 8);
     cy.get(".movie-card .movie-title-container")

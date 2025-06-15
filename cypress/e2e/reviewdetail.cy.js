@@ -2,12 +2,16 @@ describe("帖子列表系统测试", () => {
 
   it("进入帖子列表选择帖子并写评论", () => {
     cy.visit("/login");
+    cy.intercept('POST', '/api/login').as('loginReq');
     cy.get('[data-test="username"]').type("testuser");
     cy.get('.el-form-item[data-test="password"] input').type("123456");
     cy.on("window:alert", (txt) => {
       expect(txt).to.equal("登录成功");
     });
     cy.get('[data-test="login-button"]').click();
+    cy.wait('@loginReq', { timeout: 10000 }) // 最多等10秒响应
+    .its('response.statusCode')
+    .should('eq', 200);
     cy.url().should("include", "/"); // 确认跳到首页
     cy.get('[data-test="forum-link"]').click(); // 点击论坛链接
     cy.url().should("include", "/forum"); // 确认跳转到论坛页面
