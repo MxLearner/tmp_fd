@@ -103,9 +103,9 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       const { oldPassword, newPassword, confirmPassword } = form.value
-      if (!oldPassword || !newPassword || !confirmPassword) {
-        return
-      }
+      // if (!oldPassword || !newPassword || !confirmPassword) {
+      //   return
+      // }
       if (newPassword !== confirmPassword) {
         alert('新密码和确认密码不一致!')
         return

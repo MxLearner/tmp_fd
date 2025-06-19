@@ -65,10 +65,10 @@ export default defineComponent({
     // 登录请求处理
     const handleLogin = async () => {
       const { username, password } = form.value
-      if (!username || !password) {
-        message.value = '用户名和密码不能为空'
-        return
-      }
+      // if (!username || !password) {
+      //   message.value = '用户名和密码不能为空'
+      //   return
+      // }
       
       loading.value = true
       let data = {
